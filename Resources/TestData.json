@@ -1,0 +1,19 @@
+{
+    "username": "login",
+    "password": "password",
+    "testName": "testName1",
+    "testStatus": "Failed",
+    "testMethod": "testMethod",
+    "startTime": "2021-03-19 07:43:53.0",
+    "endTime": "2021-03-19 11:08:33.0",
+    "enviroment": "testEnviroment",
+    "browser": "testBrowser",
+    "nmbOfTestsOnPage": "21",
+    "tdNumberForTestName": "1",
+    "tdNumberForStartTime": "4",
+    "testRailUrl": "https://tr.a1qa.com/",
+    "testRailLogin": "v.vinokurov@a1qa.com",
+    "testRailPassword": "9828_vFHv7kEQLV6dx",
+    "projectID": "140",
+    "caseID": "11345486"
+}
