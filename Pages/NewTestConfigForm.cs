@@ -1,6 +1,8 @@
 ﻿using Aquality.Selenium.Browsers;
 using Aquality.Selenium.Elements.Interfaces;
 using Aquality.Selenium.Forms;
+using Final_Task.Models;
+using Final_Task.Utils;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 
@@ -8,64 +10,60 @@ namespace Final_Task.Pages
 {
     public class NewTestConfigForm : Form
     {
-        private readonly ITextBox testNameTextBox = ElementFactory.GetTextBox(By.XPath("//input[@id='testName']"), "testNameTextBox");
-        private readonly ITextBox testStatusTextBox = ElementFactory.GetTextBox(By.XPath("//select[@id='testStatus']"), "testStatusTextBox");
-        private readonly ITextBox testMethodTextBox = ElementFactory.GetTextBox(By.XPath("//input[@id='testMethod']"), "testMethodTextBox");
-        private readonly ITextBox startTimeTextBox = ElementFactory.GetTextBox(By.XPath("//input[@id='startTime']"), "startTimeTextBox");
-        private readonly ITextBox endTimeTextBox = ElementFactory.GetTextBox(By.XPath("//input[@id='endTime']"), "endTimeTextBox");
-        private readonly ITextBox enviromentTextBox = ElementFactory.GetTextBox(By.XPath("//input[@id='environment']"), "enviromentTextBox");
-        private readonly ITextBox browserTextBox = ElementFactory.GetTextBox(By.XPath("//input[@id='browser']"), "browserTextBox");
-        private readonly IButton attachmentButton = ElementFactory.GetButton(By.XPath("//input[@id='attachment']"), "attachmentButton");
-        private readonly IButton saveTestButton = ElementFactory.GetButton(By.XPath("//button[contains(@class,'btn-primary') and @type='button']"), "saveTestButton");
-        private readonly ILabel resultLabel = ElementFactory.GetLabel(By.XPath("//div[contains(@class,'alert-success')]"), "resultLabel");
-        private readonly ILabel pageBodyLabel = ElementFactory.GetLabel(By.XPath("//body"), "pageBodyLabel");
+        private ITextBox TestNameTextBox => ElementFactory.GetTextBox(By.XPath("//input[@id='testName']"), "testNameTextBox");
+        private ITextBox TestStatusTextBox => ElementFactory.GetTextBox(By.XPath("//select[@id='testStatus']"), "testStatusTextBox");
+        private ITextBox TestMethodTextBox => ElementFactory.GetTextBox(By.XPath("//input[@id='testMethod']"), "testMethodTextBox");
+        private ITextBox StartTimeTextBox => ElementFactory.GetTextBox(By.XPath("//input[@id='startTime']"), "startTimeTextBox");
+        private ITextBox EndTimeTextBox => ElementFactory.GetTextBox(By.XPath("//input[@id='endTime']"), "endTimeTextBox");
+        private ITextBox EnviromentTextBox => ElementFactory.GetTextBox(By.XPath("//input[@id='environment']"), "enviromentTextBox");
+        private ITextBox BrowserTextBox => ElementFactory.GetTextBox(By.XPath("//input[@id='browser']"), "browserTextBox");
+        private IButton AttachmentButton => ElementFactory.GetButton(By.XPath("//input[@id='attachment']"), "attachmentButton");
+        private IButton SaveTestButton => ElementFactory.GetButton(By.XPath("//button[contains(@class,'btn-primary') and @type='button']"), "saveTestButton");
+        private ILabel ResultLabel => ElementFactory.GetLabel(By.XPath("//div[contains(@class,'alert-success')]"), "resultLabel");
+        private ILabel PageBodyLabel => ElementFactory.GetLabel(By.XPath("//body"), "pageBodyLabel");
 
         public NewTestConfigForm() : base(By.XPath("//div[@class='modal-content']"), "NewTestForm")
         {
 
         }
 
-        public NewTestConfigForm SetParametersToTest(string testName, string testStatus, string testMethod, string startTime, string endTime, string enviroment, string browser)
+        public NewTestConfigForm SetParametersToTest(TestModel newTest)
         {
-            testNameTextBox.SendKeys(testName);
-            testStatusTextBox.SendKeys(testStatus);
-            testMethodTextBox.SendKeys(testMethod);
-            startTimeTextBox.SendKeys(startTime);
-            endTimeTextBox.SendKeys(endTime);
-            enviromentTextBox.SendKeys(enviroment);
-            browserTextBox.SendKeys(browser);
-            attachmentButton.SendKeys("C:/Файлы по a1qa/FinalTask/Final_Task/Resources/ScreenshotOfCurrentPage.png");
+            TestNameTextBox.SendKeys(newTest.Name);
+            TestStatusTextBox.SendKeys(newTest.Status);
+            TestMethodTextBox.SendKeys(newTest.Method);
+            StartTimeTextBox.SendKeys(newTest.StartTime);
+            EndTimeTextBox.SendKeys(newTest.EndTime);
+            EnviromentTextBox.SendKeys(newTest.Enviroment);
+            BrowserTextBox.SendKeys(newTest.Browser);
+            AttachmentButton.SendKeys(newTest.PathToScreenshot);
 
             return this;
         }
 
         public NewTestConfigForm SaveFileScreenshotOfCurrentPage()
         {
-            pageBodyLabel.State.WaitForExist();
-            Screenshot screenshot = pageBodyLabel.GetElement().GetScreenshot();
-            screenshot.SaveAsFile("../../../Resources//ScreenshotOfCurrentPage.png");
+            PageBodyLabel.State.WaitForExist();
+            Screenshot screenshot = PageBodyLabel.GetElement().GetScreenshot();
+            screenshot.SaveAsFile(FileUtils.GetTestFilePath(FileUtils.pathToTestScreenshot));
 
             return this;
         }
 
         public string GetTextFromPageResultLabel()
         {
-            return resultLabel.Text;
+            return ResultLabel.Text;
         }
 
-        public NewTestConfigForm ClickOnSaveTestButton()
+        public void ClickOnSaveTestButton()
         {
-            saveTestButton.Click();
-
-            return this;
+            SaveTestButton.Click();
         }
 
-        public NewTestConfigForm CloseThePopUp()
+        public void CloseThePopUp()
         {
             Actions actions = new Actions(AqualityServices.Browser.Driver);
             actions.MoveByOffset(100, 100).Click().Build().Perform();
-
-            return this;
         }
     }
 }

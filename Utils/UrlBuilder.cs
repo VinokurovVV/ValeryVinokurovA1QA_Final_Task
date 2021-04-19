@@ -2,21 +2,21 @@
 {
     class UrlBuilder
     {
-        public static string GetUrlForBasicAuthorization(string username, string password)
+        public static string GetUrlForBasicAuthorization(string username, string password, string url)
         {
-            string url = string.Format("http://{0}:{1}@localhost:8080/web", username, password);
+            string urlForBasicAuthorization = string.Format("http://{0}:{1}@{2}", username, password, url);
 
-            return url;
+            return urlForBasicAuthorization;
         }
 
-        public static string GetUrlForTokenGetPostRequest(string variant = "2")
+        public static string GetUrlForTokenGetPostRequest(string variant)
         {
             string url = string.Format("http://localhost:8080/api/token/get?variant={0}", variant);
 
             return url;
         }
 
-        public static string GetUrlForTestGetXMLPostRequest(string progectId = "1")
+        public static string GetUrlForTestGetXMLPostRequest(string progectId)
         {
             string url = string.Format("http://localhost:8080/api/test/get/xml?projectId={0}", progectId);
 

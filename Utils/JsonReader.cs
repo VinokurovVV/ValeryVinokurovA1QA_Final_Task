@@ -7,7 +7,7 @@ namespace Final_Task.Utils
     {
         public static string GetParameter(string jsonData)
         {
-            var data = JObject.Parse(File.ReadAllText("../../../Resources//TestData.json"));
+            var data = JObject.Parse(File.ReadAllText(FileUtils.GetTestFilePath(FileUtils.pathToTestDataFile)));
             return (string)data[jsonData];
         }
     }

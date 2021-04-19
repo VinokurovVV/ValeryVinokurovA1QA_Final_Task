@@ -11,9 +11,12 @@ namespace Final_Task.Tests
         [SetUp]
         public void Setup()
         {
-            browser.Maximize(); 
-            browser.GoTo(UrlBuilder.GetUrlForBasicAuthorization(JsonReader.GetParameter("username"), JsonReader.GetParameter("password")));
-            browser.WaitForPageToLoad(); 
+            browser.Maximize();
+            browser.GoTo(UrlBuilder.GetUrlForBasicAuthorization(
+                JsonReader.GetParameter("username") ?? TestContext.Parameters["username"]?.ToString(),
+                JsonReader.GetParameter("password") ?? TestContext.Parameters["password"]?.ToString(),
+                JsonReader.GetParameter("url")));
+            browser.WaitForPageToLoad();
         }
 
         [OneTimeTearDown]

@@ -1,5 +1,4 @@
-﻿using Aquality.Selenium.Browsers;
-using Aquality.Selenium.Elements.Interfaces;
+﻿using Aquality.Selenium.Elements.Interfaces;
 using Aquality.Selenium.Forms;
 using OpenQA.Selenium;
 
@@ -7,9 +6,9 @@ namespace Final_Task.Pages
 {
     public class AddProjectPage : Form
     {
-        private readonly ITextBox projectNameTextBox = ElementFactory.GetTextBox(By.XPath("//input[@id='projectName']"), "projectNameTextBox");
-        private readonly IButton saveProjectButton = ElementFactory.GetButton(By.XPath("//button[@type='submit']"), "saveProjectButton");
-        private readonly ILabel resultLabel = ElementFactory.GetLabel(By.XPath("//div[contains(@class,'alert-success')]"), "resultLabel");
+        private ITextBox ProjectNameTextBox => ElementFactory.GetTextBox(By.XPath("//input[@id='projectName']"), "projectNameTextBox");
+        private IButton SaveProjectButton => ElementFactory.GetButton(By.XPath("//button[@type='submit']"), "saveProjectButton");
+        private ILabel ResultLabel => ElementFactory.GetLabel(By.XPath("//div[contains(@class,'alert-success')]"), "resultLabel");
 
         public AddProjectPage() : base(By.XPath("//form[@id='addProjectForm']"), "AddProjectPage")
         {
@@ -18,34 +17,24 @@ namespace Final_Task.Pages
 
         public bool IsPageDisplayed()
         {
-            return new AddProjectPage().State.WaitForDisplayed();
+            return State.WaitForDisplayed();
         }
 
         public AddProjectPage SendProgectName(string projectName)
         {
-            projectNameTextBox.SendKeys(projectName);
+            ProjectNameTextBox.SendKeys(projectName);
 
             return this;
         }
 
-        public AddProjectPage SaveProjectName()
+        public void SaveProjectName()
         {
-            saveProjectButton.Click();
-
-            return this;
+            SaveProjectButton.Click();
         }
 
         public string GetTextFromPageResultLabel()
         {
-            return resultLabel.Text;
-        }
-
-        public MainPage CloseAddProjectPage()
-        {
-            AqualityServices.Browser.Tabs().CloseTab();
-            AqualityServices.Browser.Tabs().SwitchToLastTab();
-
-            return new MainPage();
+            return ResultLabel.Text;
         }
     }
 }

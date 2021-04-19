@@ -8,7 +8,9 @@ namespace Final_Task.Pages
     {
         public NewTestConfigForm newTestConfigForm;
 
-        private readonly IButton addTestButton = ElementFactory.GetButton(By.XPath("//button[contains(@class,'btn-primary')]"), "addTestButton");
+        private IButton AddTestButton => ElementFactory.GetButton(By.XPath("//button[contains(@class,'btn-primary')]"), "addTestButton");
+        private ILabel TestInfoLabel(string testName) => ElementFactory.GetLabel(By.XPath($"//a[contains(@href,'testInfo') and contains(text(),'{testName}')]"), "testInfoLabel");
+        private IButton NewTestButton(string testName) => ElementFactory.GetButton(By.XPath($"//a[contains(@href,'testInfo') and contains(text(),'{testName}')]"), "newTestButton");
 
         public NewProjectPage() : base(By.XPath("//canvas[@class='flot-overlay']"), "NewProjectPage")
         {
@@ -17,26 +19,19 @@ namespace Final_Task.Pages
 
         public NewProjectPage ClickOnAddTestButton()
         {
-            addTestButton.Click();
+            AddTestButton.Click();
 
             return this;
-        }       
-
-        public bool IsNewTestInfoDisplayed(string testName)
-        {
-            string newTestInfoXPath = string.Format("//a[contains(@href,'testInfo') and contains(text(),'{0}')]", testName);
-            ILabel testInfoLabel = ElementFactory.GetLabel(By.XPath(newTestInfoXPath), "testInfoLabel");
-
-            return testInfoLabel.State.WaitForDisplayed();
         }
 
-        public NewTestPage ClickOnNewTestButton(string testName) 
+        public bool IsNewTestDisplayed(string testName)
         {
-            string newTestXPath = string.Format("//a[contains(@href,'testInfo') and contains(text(),'{0}')]", testName);
-            IButton newTestButton = ElementFactory.GetButton(By.XPath(newTestXPath), "newTestButton");
-            newTestButton.Click(); 
+            return TestInfoLabel(testName).State.WaitForDisplayed();
+        }
 
-            return new NewTestPage();
+        public void ClickOnNewTestButton(string testName)
+        {
+            NewTestButton(testName).Click();
         }
     }
 }

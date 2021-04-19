@@ -1,10 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.IO;
-using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.IO;
+using System.Net;
+using System.Text;
 
 namespace Gurock.TestRail
 {
@@ -68,7 +67,7 @@ namespace Gurock.TestRail
 
             if (method == "POST")
             {
-                if (uri.StartsWith("add_attachment"))  
+                if (uri.StartsWith("add_attachment"))
                 {
                     string boundary = String.Format("{0:N}", Guid.NewGuid());
                     string filePath = (String)data;
@@ -117,7 +116,7 @@ namespace Gurock.TestRail
                     request.GetRequestStream().Write(block, 0, block.Length);
                 }
             }
-            
+
             Exception ex = null;
             HttpWebResponse response = null;
             try
@@ -135,8 +134,8 @@ namespace Gurock.TestRail
                 ex = e;
             }
 
-            if ((response != null) 
-                && ((int)response.StatusCode == 200) 
+            if ((response != null)
+                && ((int)response.StatusCode == 200)
                 && (uri.StartsWith("get_attachment/")))
             {
                 byte[] buffer = new byte[1024];
@@ -149,7 +148,7 @@ namespace Gurock.TestRail
                     int bytesRead;
 
                     while ((bytesRead = receiveStream.Read(buffer, 0, buffer.Length)) > 0)
-                    { 
+                    {
                         fileStream.Write(buffer, 0, bytesRead);
                         bytesReceived += bytesRead;
                     }
@@ -158,7 +157,7 @@ namespace Gurock.TestRail
                     fileStream.Close();
                     response.Close();
 
-                    return (String) data;
+                    return (String)data;
                 }
                 catch (Exception)
                 {
@@ -193,7 +192,7 @@ namespace Gurock.TestRail
                     {
                         result = JObject.Parse(text);
                     }
-                    catch   
+                    catch
                     {
                         throw new APIException(String.Format(
                             "TestRail API returned the following: {0}\n",
