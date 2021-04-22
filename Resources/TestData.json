@@ -1,7 +1,7 @@
 {
-    "url": "localhost:8080/web",
-    "username": "",
-    "password": "",
+    "url": "localhost:8080",
+    "username": "login",
+    "password": "password",
     "testName": "testName11",
     "testStatus": "Failed",
     "testMethod": "testMethod",

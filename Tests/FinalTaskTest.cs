@@ -6,6 +6,7 @@ using Gurock.TestRail;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using System.Net;
+using Microsoft.WindowsAzure.Common.Internals;
 
 namespace Final_Task.Tests
 {
@@ -22,7 +23,7 @@ namespace Final_Task.Tests
             NewTestPage newTestPage = new NewTestPage();
 
             AqualityServices.Logger.Info("Send request to the api to get a token according to the option number");
-            PostRequestModel apiRequestForToken = ApiUtils.GetPostRequestModel(UrlBuilder.GetUrlForTokenGetPostRequest(JsonReader.GetParameter("variant")));
+            PostRequestModel apiRequestForToken = ApiUtils.GetPostRequestModel(UrlBuilder.GetUrlForTokenGetPostRequest(JsonReader.GetParameter("url"), JsonReader.GetParameter("variant")));
             Assert.AreEqual(apiRequestForToken.StatusCode, HttpStatusCode.OK, "Post request status code is not correct.");
             string token = apiRequestForToken.Response;
             Assert.AreNotEqual(token, null, "Token are not generated.");
@@ -43,7 +44,7 @@ namespace Final_Task.Tests
                 " Send request to the api to get a list of tests in XML format.");
             string nexageProjectId = mainPage.GetProjectIdByProjectName("Nexage");
             mainPage.SelectProgect("Nexage");
-            PostRequestModel apiRequestForTestsInXML = ApiUtils.GetPostRequestModel(UrlBuilder.GetUrlForTestGetXMLPostRequest(nexageProjectId));
+            PostRequestModel apiRequestForTestsInXML = ApiUtils.GetPostRequestModel(UrlBuilder.GetUrlForTestGetXMLPostRequest(JsonReader.GetParameter("url"), nexageProjectId));
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(apiRequestForTestsInXML.StatusCode, HttpStatusCode.OK, "Post request status code is not correct.");
@@ -51,6 +52,7 @@ namespace Final_Task.Tests
             });
 
             string testsInXml = apiRequestForTestsInXML.Response;
+            Assert.IsTrue(ParserHelper.IsXml(testsInXml), "Api request returned tests not in xml format.");
             var testsListFromXml = XmlUtils.ConvertXmlStringToObject<XmlTestsModel>(XmlUtils.SetXmlRootToXmlString(XmlTestsModel.xmlRoot, testsInXml)).TestsList;
             Assert.Multiple(() =>
             {
@@ -107,12 +109,13 @@ namespace Final_Task.Tests
                            SaveFileScreenshotOfCurrentPage().ClickOnSaveTestButton();
             Assert.AreEqual("Test " + JsonReader.GetParameter("testName") + " saved", newProjectPage.newTestConfigForm.GetTextFromPageResultLabel(), "Test is not saved.");
             newProjectPage.newTestConfigForm.CloseThePopUp();
-            Assert.IsTrue(newProjectPage.IsNewTestDisplayed(JsonReader.GetParameter("testName")), "New test is not displayed.");
+            Assert.IsTrue(newProjectPage.IsNewTestDisplayed(JsonReader.GetParameter("testName")), "New test is not displayed on project page.");
 
             AqualityServices.Logger.Info(
                 "Go to the page of the created test." +
                 " Check the correctness of the information.");
             newProjectPage.ClickOnNewTestButton(JsonReader.GetParameter("testName"));
+            Assert.IsTrue(newTestPage.IsPageDisplayed(), "New test page is not dispayed.");
             Assert.Multiple(() =>
             {
                 Assert.IsTrue(newTestPage.IsTheFieldFilledCorrect(JsonReader.GetParameter("testName")), "Test name is not correct.");

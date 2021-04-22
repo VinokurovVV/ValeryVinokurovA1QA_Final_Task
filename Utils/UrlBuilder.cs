@@ -4,23 +4,23 @@
     {
         public static string GetUrlForBasicAuthorization(string username, string password, string url)
         {
-            string urlForBasicAuthorization = string.Format("http://{0}:{1}@{2}", username, password, url);
+            string urlForBasicAuthorization = string.Format($"http://{username}:{password}@{url}/web");
 
             return urlForBasicAuthorization;
         }
 
-        public static string GetUrlForTokenGetPostRequest(string variant)
+        public static string GetUrlForTokenGetPostRequest(string url, string variant)
         {
-            string url = string.Format("http://localhost:8080/api/token/get?variant={0}", variant);
+            string urlForTokenGetPostRequest = string.Format($"http://{url}/api/token/get?variant={variant}");
 
-            return url;
+            return urlForTokenGetPostRequest;
         }
 
-        public static string GetUrlForTestGetXMLPostRequest(string progectId)
+        public static string GetUrlForTestGetXMLPostRequest(string url, string progectId)
         {
-            string url = string.Format("http://localhost:8080/api/test/get/xml?projectId={0}", progectId);
+            string urlForTestGetXMLPostRequest = string.Format($"http://{url}/api/test/get/xml?projectId={progectId}");
 
-            return url;
+            return urlForTestGetXMLPostRequest;
         }
     }
 }

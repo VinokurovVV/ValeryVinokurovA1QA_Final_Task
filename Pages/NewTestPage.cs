@@ -18,6 +18,11 @@ namespace Final_Task.Pages
 
         }
 
+        public bool IsPageDisplayed()
+        {
+            return State.WaitForDisplayed();
+        }
+
         public string getScreenshotBase64String()
         {
             string screenshotBase64StringFromWeb = ScreenshotLink.GetAttribute("src");
