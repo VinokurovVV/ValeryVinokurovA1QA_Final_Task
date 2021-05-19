@@ -1,0 +1,19 @@
+{
+    "url": "localhost:8080",
+    "username": "login",
+    "password": "password",
+    "testName": "testName11",
+    "testStatus": "Failed",
+    "testMethod": "testMethod",
+    "startTime": "2021-03-19 10:59:53.0",
+    "endTime": "2021-03-19 11:08:33.0",
+    "enviroment": "testEnviroment",
+    "browser": "testBrowser",
+    "variant": "2",
+    "testsInXMLResponseContentType": "application/xml",
+    "testRailUrl": "https://tr.a1qa.com/",
+    "testRailLogin": "",
+    "testRailPassword": "",
+    "projectID": "140",
+    "caseID": "11345486"
+}
